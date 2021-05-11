@@ -19,10 +19,11 @@ class EchoConsumer2(AsyncJsonWebsocketConsumer):
         await self.channel_layer.group_send(self.room_group_name, {
             'type': 'chat_message',
             'message': text_data,
+            'user': self.user,
         })
 
     async def chat_message(self, event):
-        message = event['message']
+        message = f"{event['user']}:{event['message']}"
 
         # Send message to WebSocket
         await self.send(text_data=message)
